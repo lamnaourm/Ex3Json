@@ -3,6 +3,7 @@ package com.example.ex3json;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -12,6 +13,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +29,19 @@ public class MainActivity extends AppCompatActivity {
         String res = loadJsonFromRaw(R.raw.etablissement);
         etablissement = getEtablissementFromJson(res);
 
+        t1 = findViewById(R.id.nomEtablissement);
+        t2 = findViewById(R.id.adresseEtablissement);
+        ls = findViewById(R.id.lstFils);
+
+        t1.setText(etablissement.getNom());
+        t2.setText(etablissement.getAdresse());
+
+        ArrayList<String> fils = new ArrayList<>();
+        for(Filiere f : etablissement.getFilieres())
+            fils.add(f.getNom() + " - " + f.getNomComplet() + " - " + f.getNiveau());
+
+        ArrayAdapter ad = new ArrayAdapter(this, android.R.layout.simple_list_item_1,fils);
+        ls.setAdapter(ad);
 
     }
 
@@ -48,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public Etablissement getEtablissementFromJson(String json){
-        Etablissement etablissement=null;
+        Etablissement etablissement=new Etablissement();
         try {
             JSONObject obj = new JSONObject(json);
 
@@ -61,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 Filiere fil = new Filiere();
 
                 fil.setNom(o.getString("nom"));
-                fil.setNomComplet(o.getString("nomComplet"));
+                fil.setNomComplet(o.getString("nomcomplet"));
                 fil.setNiveau(o.getString("niveau"));
                 fil.setNbModule(o.getInt("nombreModule"));
 

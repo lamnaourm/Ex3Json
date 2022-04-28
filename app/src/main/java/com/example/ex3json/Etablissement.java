@@ -7,7 +7,7 @@ public class Etablissement implements Serializable {
 
     private String nom;
     private String adresse;
-    private ArrayList<Filiere> filieres;
+    private ArrayList<Filiere> filieres=new ArrayList<>();
 
     public String getNom() {
         return nom;
